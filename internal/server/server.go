@@ -25,6 +25,7 @@ type Server struct {
 	Logger       *zap.SugaredLogger
 	Events       events.Config
 	ChangeTopics []string
+	Publisher    events.Publisher
 
 	events pubsub.Events
 }

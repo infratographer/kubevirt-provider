@@ -71,32 +71,30 @@ func process(ctx context.Context, logger *zap.SugaredLogger) error {
 	}
 
 	server := &server.Server{
-		Context:          cx,
-		Debug:            viper.GetBool("logging.debug"),
-		Echo:             eSrv,
-		Locations:        viper.GetStringSlice("event-locations"),
-		Logger:           logger,
-		SubscriberConfig: config.AppConfig.Events.Subscriber,
-		ChangeTopics:     viper.GetStringSlice("change-topics"),
-		IPBlock:          viper.GetString("ipblock"),
+		Context:   cx,
+		Debug:     viper.GetBool("logging.debug"),
+		Echo:      eSrv,
+		Locations: viper.GetStringSlice("event-locations"),
+		Logger:    logger,
+		// SubscriberConfig: config.AppConfig.Events.Subscriber,
+		ChangeTopics: viper.GetStringSlice("change-topics"),
+		IPBlock:      viper.GetString("ipblock"),
 	}
 
 	// init lbapi client and ipam client
 	if config.AppConfig.OIDC.Issuer != "" {
-		oidcTS, err := oauth2x.NewClientCredentialsTokenSrc(ctx, config.AppConfig.OIDC.Client)
+		// oidcTS, err := oauth2x.NewClientCredentialsTokenSrc(ctx, config.AppConfig.OIDC.Client)
 		if err != nil {
 			logger.Fatalw("failed to create oauth2 token source", "error", err)
 		}
 
-		oauthHTTPClient := oauth2x.NewClient(ctx, oidcTS)
-		server.APIClient = lbapi.NewClient((viper.GetString("api-endpoint")),
-			lbapi.WithHTTPClient(oauthHTTPClient),
-		)
-		server.IPAMClient = ipamclient.NewClient((viper.GetString("ipam-endpoint")),
-			ipamclient.WithHTTPClient(oauthHTTPClient),
-		)
+		// oauthHTTPClient := oauth2x.NewClient(ctx, oidcTS)
+		// server.APIClient = lbapi.NewClient((viper.GetString("api-endpoint")),
+		// 	lbapi.WithHTTPClient(oauthHTTPClient),
+		// )
+		server.IPAMClient = ipamclient.NewClient((viper.GetString("ipam-endpoint"))) // ipamclient.WithHTTPClient(oauthHTTPClient),
 	} else {
-		server.APIClient = lbapi.NewClient((viper.GetString("api-endpoint")))
+		// server.APIClient = lbapi.NewClient((viper.GetString("api-endpoint")))
 		server.IPAMClient = ipamclient.NewClient((viper.GetString("ipam-endpoint")))
 	}
 
