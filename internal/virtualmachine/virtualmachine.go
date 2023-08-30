@@ -28,6 +28,7 @@ func NewVirtualMachine(ctx context.Context, logger *zap.SugaredLogger, client *h
 	// Stubbed out for now
 	v.VirtualMachineID = gidx.MustNewID(VMPrefix)
 	v.VMType = TypeVM
+
 	return v, nil
 }
 
