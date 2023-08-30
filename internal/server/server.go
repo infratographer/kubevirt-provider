@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"errors"
 	"net/http"
 
 	"go.infratographer.com/kubevirt-provider/internal/pubsub"
@@ -31,7 +30,7 @@ type Server struct {
 }
 
 // Run will start the server queue connections and healthcheck endpoints
-func (s *Server) Run(ctx context.Context) error {
+func (s *Server) Run(_ context.Context) error {
 	go func() {
 		if err := s.Echo.Run(); err != nil {
 			s.Logger.Error("unable to start healthcheck server", zap.Error(err))
@@ -61,13 +60,13 @@ func (s *Server) ConfigureSubscribers() error {
 		conn, err := events.NewConnection(s.Events, events.WithLogger(s.Logger))
 		if err != nil {
 			s.Logger.Errorw("unable to create change subscriber", "error", err, "topic", topic)
-			err = errors.Join(err, errSubscriberCreate)
+			// err = errors.Join(err, errSubscriberCreate)
 		}
 
 		changes, err := conn.SubscribeChanges(s.Context, topic)
 		if err != nil {
 			s.Logger.Errorw("unable to subscribe to change topic", "error", err, "topic", topic, "type", "change")
-			err = errors.Join(err, errSubscriptionCreate)
+			// err = errors.Join(err, errSubscriptionCreate)
 		}
 
 		s.events.ChangeChannels = append(s.events.ChangeChannels, changes)

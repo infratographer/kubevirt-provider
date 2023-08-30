@@ -53,4 +53,11 @@ issues:
     - (Expect directory permissions to be 0750 or less|Expect file permissions to be 0600 or less)
     # EXC0010 gosec: False positive is triggered by 'src, err := ioutil.ReadFile(filename)'
     - Potential file inclusion via variable
+
+    # Begone
+    - block should not (start|end) with a whitespace.*
+    - error return value of.*
+    - .* should have comment or be unexported
+    - .* is unused
+    - .* seems to be unused
   exclude-use-default: false

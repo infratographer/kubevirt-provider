@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	//"slices"
+	// "slices"
 	"strings"
 
 	"go.infratographer.com/x/events"
@@ -33,6 +33,7 @@ func (s *Server) ProcessChange(messages <-chan events.Message[events.ChangeMessa
 					} else {
 						// nack and retry
 						// msg.Nak()
+						return // XXX
 					}
 
 					continue
